@@ -9,7 +9,7 @@ public class AccountDAO {
     public Account getAccountByUsername(String username){
         Connection connection = ConnectionUtil.getConnection();
         try {
-            String sql = "SELECT * FROM Author WHERE username = ?";
+            String sql = "SELECT * FROM account WHERE username = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement.setString(1, username);

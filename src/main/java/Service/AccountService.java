@@ -23,7 +23,7 @@ public class AccountService {
     }
 
     public boolean exists(Account account){
-        if(accountDAO.getAccountByUsername(account.getUsername()) != null){
+        if(accountDAO.getAccountByUsername(account.getUsername()) != null && account.getPassword().equals(accountDAO.getAccountByUsername(account.getUsername()).getPassword())){
             return true;
         }
         return false;
