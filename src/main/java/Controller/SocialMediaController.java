@@ -7,6 +7,9 @@ import Service.MessageService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import static org.mockito.ArgumentMatchers.nullable;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
@@ -47,11 +50,27 @@ public class SocialMediaController {
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      */
     private void registerHandler(Context context) throws JsonProcessingException {
-        context.json("sample text");
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(context.body(), Account.class);
+        Account newAccount = accountService.addAccount(account);
+        if(newAccount != null) {
+            context.json(mapper.writeValueAsString(newAccount));
+            context.status(200);
+        }
+        else    
+            context.status(400);
     }
 
-    private void loginHandler(Context context) {
-
+    private void loginHandler(Context context) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(context.body(), Account.class);
+        if(accountService.exists(account)) {
+            Account retrieved = accountService.retrieveAccount(account.getUsername());
+            context.json(mapper.writeValueAsString(retrieved));
+            context.status(200);
+        }
+        else    
+            context.status(401);
     }
 
     private void postMessagesHandler(Context context) {
