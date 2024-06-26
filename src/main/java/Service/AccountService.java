@@ -11,6 +11,7 @@ public class AccountService {
     }
 
     public Account addAccount(Account account){
+        if(account.getUsername().length() > 0 && account.getUsername().length() < 256 && account.getPassword().length() >= 4 && account.getPassword().length() < 256)
         if(accountDAO.getAccountByUsername(account.getUsername()) != null){
             return null;
         }
@@ -18,7 +19,7 @@ public class AccountService {
     }
 
     public Account retrieveAccount(String username){
-        return accountDAO.getAccountbyUsername(username);
+        return accountDAO.getAccountByUsername(username);
     }
 
     public boolean exists(Account account){
