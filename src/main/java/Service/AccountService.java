@@ -11,10 +11,10 @@ public class AccountService {
     }
 
     public Account addAccount(Account account){
-        if(account.getUsername().length() > 0 && account.getUsername().length() < 256 && account.getPassword().length() >= 4 && account.getPassword().length() < 256)
-        if(accountDAO.getAccountByUsername(account.getUsername()) != null){
+        if(account.getUsername().length() <= 0 || account.getUsername().length() >= 256 || account.getPassword().length() < 4 || account.getPassword().length() >= 256)
             return null;
-        }
+        if(accountDAO.getAccountByUsername(account.getUsername()) != null)
+            return null;
         return accountDAO.insertAccount(account);
     }
 

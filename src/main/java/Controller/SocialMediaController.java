@@ -42,7 +42,6 @@ public class SocialMediaController {
         app.patch("/messages/{message_id}", this::updateMessageHandler);
         app.get("/accounts/{account_id}/messages", this::getAllMessagesByUserHandler);
         app.start(8080);
-
         return app;
     }
 
@@ -86,11 +85,11 @@ public class SocialMediaController {
 
     private void getAllMessagesHandler(Context context) {
         List<Message> messages = messageService.getAllMessages();
-        context.json(messages);
+        if(messages != null)
+            context.json(messages);
     }
 
     private void getMessageByIdHandler(Context context) {
-        ObjectMapper mapper = new ObjectMapper();
         int messageId = Integer.valueOf(context.pathParam("message_id"));
         Message target = messageService.retrieveMessage(messageId);
         if(target != null)
@@ -98,7 +97,6 @@ public class SocialMediaController {
     }
 
     private void deleteMessageByIdHandler(Context context) {
-        ObjectMapper mapper = new ObjectMapper();
         int messageId = Integer.valueOf(context.pathParam("message_id"));
         Message target = messageService.deleteMessage(messageId);
         if(target != null)
@@ -117,9 +115,9 @@ public class SocialMediaController {
     }
 
     private void getAllMessagesByUserHandler(Context context) {
-        ObjectMapper mapper = new ObjectMapper();
         int accountId = Integer.valueOf(context.pathParam("account_id"));
         List<Message> messages = messageService.getAllMessagesFromAccount(accountId);
-        context.json(messages);
+        if(messages != null)
+            context.json(messages);
     }
 }

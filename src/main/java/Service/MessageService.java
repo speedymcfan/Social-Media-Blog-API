@@ -12,7 +12,9 @@ public class MessageService {
     }
 
     public Message addMessage(Message message){
-        return messageDAO.insertMessage(message);
+        if(message.getMessage_text().length() <= 0 || message.getMessage_text().length() > 255 || messageDAO.exists(message.getPosted_by()) == false)
+            return null;
+        return messageDAO.insert(message);
     }
 
     public List<Message> getAllMessages(){
@@ -25,19 +27,19 @@ public class MessageService {
 
     public Message deleteMessage(int messageId){
         if(messageDAO.getMessageById(messageId) != null){
-            messageDAO.delete(messageId);
+            return messageDAO.delete(messageId);
         }
         return null;
     }
 
     public Message updateMessage(int messageId, Message message){
         if(messageDAO.getMessageById(messageId) != null){
-            messageDAO.update(messageId);
+            return messageDAO.update(messageId, message);
         }
         return null;
     }
 
     public List<Message> getAllMessagesFromAccount(int accountId){
-        return getAllMessagesFromAccount(accountId);
+        return messageDAO.getAllMessagesFromAccount(accountId);
     }
 }
